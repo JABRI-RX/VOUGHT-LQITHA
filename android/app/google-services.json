@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "860768453683",
+    "project_id": "lqitha",
+    "storage_bucket": "lqitha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860768453683:android:e61f7fdd29f3970d7fcf46",
+        "android_client_info": {
+          "package_name": "com.vought.lqitha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXzO15y7twgppPUHVgdsyBnbUUlSrWSQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
