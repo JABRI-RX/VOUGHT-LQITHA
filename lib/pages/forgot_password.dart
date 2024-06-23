@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lqitha/components/logo.dart';
 import 'package:lqitha/components/my_button.dart';
 import 'package:lqitha/components/my_textfield.dart';
-import 'package:lqitha/pages/forgot_password.dart';
-import 'package:lqitha/pages/home.dart';
-import 'package:lqitha/pages/login_page.dart';
+ 
  
 import 'package:lqitha/services/auth/auth_service.dart';
 import 'package:lqitha/themes/light_mode.dart';

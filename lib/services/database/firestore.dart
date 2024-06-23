@@ -1,4 +1,6 @@
-import 'dart:convert';
+ 
+
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lqitha/dao/models/post.dart';
@@ -8,7 +10,6 @@ class FireStoreService{
   //save Post To Database
   Future<void> savePostToDatabase(Post p) async{
     await postsDB.add({
-        'data':DateTime.now(),
         'posts':p.toJson()
       }
     );
@@ -18,23 +19,15 @@ class FireStoreService{
       QuerySnapshot querySnapshot = await postsDB
         // .where('userId',isEqualTo: userId)
         .get();
-      print("---------------------------");
- 
+      //shit
       List<Post> posts = querySnapshot.docs.map((doc){
-        
-        print(doc.data());
-        print("---------------------------");
-
-        Post p = Post.fromJson(doc.data() as Map<String,dynamic>);
-        // Map<String, dynamic> json = doc.data() as Map<String,dynamic>;
-        print(p);
-        return Post();
+        return Post.fromJson(doc.data() as Map<String,dynamic>);
       }).toList();
-
+ 
       return posts;
     }
     catch(e){
-      print(e);
+      log(e.toString());
       return [];
     }
   }

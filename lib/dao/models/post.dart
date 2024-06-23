@@ -1,3 +1,4 @@
+ 
 import 'package:flutter/material.dart';
  
 import 'package:lqitha/dao/models/comment.dart';
@@ -12,7 +13,7 @@ class Post extends ChangeNotifier{
   String? phone;
   DateTime? dateLost;
   String? userId;
-  late List<Comment>   comments = [];
+  List<Comment>   _comments = [];
 
   Post({
     this.id,
@@ -21,26 +22,42 @@ class Post extends ChangeNotifier{
     this.phone,
     this.dateLost,
     this.userId,
-    List<Comment>? comments,
-  }): comments = comments ?? [];
+  }){
+    id = uuid.v4();
+  }
+  //getters
+  List<Comment> get comments => _comments;
+  set comments(List<Comment> comments) {
+    _comments = comments;
+    notifyListeners();
+  }
   //factory fromJson 
    factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
+    List<Comment> jsonComment = [];
+    for(dynamic rawComment in json["posts"]["comments"] as List<dynamic>){
+      jsonComment.add(Comment(
+        commentId: rawComment["commentId"],
+        userId: rawComment["userId"],
+        postId: rawComment["postId"],
+        content: rawComment["content"],
+        timestamp: DateTime.parse(rawComment["timestamp"]),
+      ));
+    }
+    Post p = Post(
       id: json["posts"]['id'],
       name: json["posts"]['name'],
       description: json["posts"]['description'],
       phone: json["posts"]['phone'],
-      dateLost: json["posts"]['dateLost'] != null ? DateTime.parse(json["posts"]['dateLost']) : null,
+      dateLost:  DateTime.parse(json["posts"]['dateLost']) ,
       userId: json["posts"]['userId'],
-      comments: (json["posts"]['comments'] as List<dynamic>?)
-          ?.map((commentJson) => Comment.fromJson(commentJson))
-          .toList() ?? [],
     );
+    //we add comments I Dont fucking now Why this hack exsis
+    p.addComments(jsonComment);
+    return p;
   }
   //post
-  void addComment(Comment c){
-    comments.add(c);
-    notifyListeners();
+  void addComments(List<Comment> commends){
+    comments = commends;
   }
   //toson
   Map<String, dynamic> toJson() {
@@ -55,6 +72,7 @@ class Post extends ChangeNotifier{
     };
   }
   //tostring
+  @override
   String toString(){
     StringBuffer res=  StringBuffer();
     res.writeln("id $id");
@@ -63,20 +81,17 @@ class Post extends ChangeNotifier{
     res.writeln("phone $phone");
     res.writeln("dateLost ${dateLost?.toString()}");
     res.writeln("userId $userId");
-    res.writeln("comments: ");
+    res.writeln("comments: [ ");
+ 
     for(Comment comment in comments){
-    // String? commentId;
-    // String? userId;
-    // String? itemId;
-    // String? content;
-    // DateTime? timestamp  ;
-      res.writeln("comment id ${comment.commentId}");
-      res.writeln("userId id ${comment.userId}");
-      res.writeln("itemId id ${comment.itemId}");
-      res.writeln("content id ${comment.content}");
-      res.writeln("timestamp id ${comment.timestamp}");
+ 
+      res.writeln("\tcomment id ${comment.commentId}");
+      res.writeln("\tuserId id ${comment.userId}");
+      res.writeln("\titemId id ${comment.postId}");
+      res.writeln("\tcontent id ${comment.content}");
+      res.writeln("\ttimestamp id ${comment.timestamp}");
     }
-    res.write("end comment");
+    res.writeln("] ");
     return res.toString();
   }
    

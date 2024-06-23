@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:lqitha/components/toast.dart';
+ 
 import 'package:lqitha/dao/models/post.dart';
 import 'package:lqitha/services/auth/auth_service.dart';
 import 'package:lqitha/services/database/firestore.dart';
-import 'package:lqitha/themes/light_mode.dart';
+ 
 class ListItem extends StatefulWidget {
 const ListItem({ super.key });
 
@@ -21,11 +23,11 @@ class _ListItemState extends State<ListItem> {
   
   @override
   void initState() {
-    // TODO: implement initState
+ 
     super.initState();
     userId = authService.getCurrentUser()?.uid;
     _postsFuture = db.getPostsFromDatabase(userId!);
- 
+
   }
   void loadData(){
     // print(_postsFuture.)
@@ -38,7 +40,7 @@ class _ListItemState extends State<ListItem> {
           future: _postsFuture,
           builder: (context,snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -47,22 +49,21 @@ class _ListItemState extends State<ListItem> {
                 child: Text("Error: ${snapshot.error}"),
               );
             }
-            else if(snapshot.hasData || snapshot.data!.isEmpty){
-              return Center(
-                child: Text("No posts found."),
-              );
-            }
+ 
             else{
               List<Post> posts = snapshot.data!;
-              return ListView.builder(
-                itemCount: posts.length,
-                itemBuilder: (context,index){
-                  Post p = posts[index];
-                  return ListTile(
-                    title: Text(p.name ?? "No Title"),
-                    subtitle: Text(p.description ?? "No descrption"),
-                  );
-                }
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context,index){
+                    Post p = posts[index];
+                    return  ListTile(
+                      leading: const Icon(Icons.inbox),
+                      title: Text(p.name ?? "No Title"),
+                        subtitle: Text(p.description ?? "No description"),
+                    );
+                  }
+                ),
               );
             }
           }

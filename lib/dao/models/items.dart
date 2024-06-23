@@ -1,4 +1,4 @@
-import 'dart:js_interop';
+ 
 
 import 'package:flutter/material.dart';
 import 'package:lqitha/dao/models/post.dart';

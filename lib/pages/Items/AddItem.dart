@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
  import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:lqitha/components/my_button.dart';
@@ -5,11 +7,10 @@ import 'package:lqitha/components/my_datetime.dart';
  
 import 'package:lqitha/components/my_textfield.dart';
 import 'package:lqitha/components/toast.dart';
+import 'package:lqitha/dao/models/comment.dart';
 import 'package:lqitha/dao/models/post.dart';
 import 'package:lqitha/services/auth/auth_service.dart';
 import 'package:lqitha/services/database/firestore.dart';
-import 'package:provider/provider.dart';
- 
  
 class AddItem extends StatefulWidget {
 const AddItem({ super.key });
@@ -35,7 +36,7 @@ class _AddItemState extends State<AddItem> {
     userId = authService.getCurrentUser()?.uid;
  
   }
-  void addItem() async{
+  void addPost() async{
     if( nameBox.text.isEmpty 
         ||descriptionBox.text.isEmpty 
         ||locationBox.text.isEmpty
@@ -59,15 +60,22 @@ class _AddItemState extends State<AddItem> {
       phone:phoneBox.text.trim(),
       dateLost:DateTime.parse(dateFoundBox.text) ,
       userId:userId,
-
     );
+    //add two fake  c omment
+    List<Comment> comments = [
+      Comment(userId: userId,postId:p.id,content:"This is first Comment"),
+      Comment(userId: userId,postId:p.id,content:"This is Second Comment"),
+    ];
+    p.comments = comments;
+    //end comment
     showToast(context, p.toJson().toString());
+    log(p.toJson().toString());
     db.savePostToDatabase(p);
     
   }
   @override
   Widget build(BuildContext context){
-    Color blue_color = Theme.of(context).colorScheme.secondary;
+    Color blueColor = Theme.of(context).colorScheme.secondary;
     return SingleChildScrollView(
       child: Column(
 
@@ -80,7 +88,7 @@ class _AddItemState extends State<AddItem> {
           const SizedBox(height: 10,),
           MyTextfield(
             controller: nameBox,
-            color: blue_color,
+            color: blueColor,
             hintText: "Name : ",
             obsecureText:  false
           ),
@@ -88,14 +96,14 @@ class _AddItemState extends State<AddItem> {
           MyTextfield(
             controller: descriptionBox,
             hintText: "description : ",
-            color: blue_color,
+            color: blueColor,
             obsecureText:  false
           ),
           const SizedBox(height: 10,),
           MyTextfield(
             controller: locationBox,
             hintText: "location : ",
-            color: blue_color,
+            color: blueColor,
             obsecureText:  false
           ),
           const SizedBox(height: 20,),
@@ -131,7 +139,7 @@ class _AddItemState extends State<AddItem> {
           MyButton(
             text:"Add",
             onTap: (){
-              addItem();
+              addPost();
                
             }, 
             bgcolor: Theme.of(context).colorScheme.secondary, 

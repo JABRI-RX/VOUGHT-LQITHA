@@ -1,32 +1,32 @@
+import 'package:uuid/uuid.dart';
+
 class Comment {
+  var uuid = Uuid();
   String? commentId;
   String? userId;
-  String? itemId;
+  String? postId;
   String? content;
   DateTime? timestamp  ;
 
   Comment({
     this.commentId,
     this.userId,
-    this.itemId,
+    this.postId,
     this.content,
     this.timestamp,
  
-  });
-
-  void addComment() {}
-  void viewComment() {}
-  void deleteComment() {}
+  }){
+    commentId =  uuid.v4();
+    timestamp = DateTime.now();
+  }
   //from json
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      commentId: json["comments"]['commentId'],
-      userId: json["comments"]['userId'],
-      itemId: json["comments"]['itemId'],
-      content: json["comments"]['content'],
-      timestamp: json["comments"]['timestamp'] != null
-          ? DateTime.parse(json["comments"]['timestamp'])
-          : null,
+      commentId: json['commentId'],
+      userId: json['userId'],
+      postId: json['postId'],
+      content: json['content'],
+      timestamp: DateTime.parse(json['timestamp']),
     );
   }
   //tojson
@@ -34,9 +34,9 @@ class Comment {
     return {
       'commentId':commentId,
       'userId':userId,
-      'itemId':itemId,
+      'postId':postId,
       'content':content,
-      'timestamp':timestamp,
+      'timestamp':timestamp.toString(),
     };
   }
 }

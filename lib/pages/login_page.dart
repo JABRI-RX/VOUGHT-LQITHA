@@ -1,19 +1,14 @@
  
  
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:lqitha/components/Toast.dart';
 import 'package:lqitha/components/logo.dart';
 import 'package:lqitha/components/my_button.dart';
 import 'package:lqitha/components/my_textfield.dart';
 import 'package:lqitha/pages/forgot_password.dart';
-import 'package:lqitha/pages/home.dart';
  
 import 'package:lqitha/services/auth/auth_service.dart';
-import 'package:lqitha/themes/light_mode.dart';
  
-
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
  
@@ -35,12 +30,12 @@ class _LoginPageState extends State<LoginPage> {
         return;
     }
     // Authentication logic here
-    final _authService = AuthService();
+    final authService = AuthService();
  
     try{
      
       //signin 
-      await _authService.signIn(
+      await authService.signIn(
         emailController.text.trim(), 
         passwordController.text.trim()
         );
@@ -60,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color white_color = Theme.of(context).colorScheme.inversePrimary;
+    Color whiteColor = Theme.of(context).colorScheme.inversePrimary;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -73,13 +68,13 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                 //logo
-                Logo(),
+                const Logo(),
                 //message, app slogan
                 Text(
                   "Missing Items Report App",
                   style: TextStyle(
                     fontSize: 16,
-                    color: white_color,
+                    color: whiteColor,
                   ),
                 ),
                 //email textfield
@@ -87,14 +82,14 @@ class _LoginPageState extends State<LoginPage> {
                 MyTextfield(
                     controller: emailController,
                     hintText: "Email",
-                    color: white_color,
+                    color: whiteColor,
                     obsecureText: false),
                 //password textfield
                 const SizedBox(height: 20),
                 MyTextfield(
                     controller: passwordController,
                     hintText: "Password",
-                    color: white_color,
+                    color: whiteColor,
 
                     obsecureText: true),
                 //sign in button
@@ -102,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 MyButton(
                   text: "Sign In",
                   onTap: login,
-                  bgcolor:white_color,
+                  bgcolor:whiteColor,
                   fgcolor:Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(height: 20),
@@ -113,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       "Not a member",
                       style: TextStyle(
-                          color: white_color),
+                          color: whiteColor),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
@@ -121,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         "Register Now",
                         style: TextStyle(
-                            color: white_color,
+                            color: whiteColor,
                             fontWeight: FontWeight.bold),
                       ),
                     )
@@ -136,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       "Forgot Password ? ",
                       style: TextStyle(
-                          color: white_color),
+                          color: whiteColor),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
@@ -144,14 +139,14 @@ class _LoginPageState extends State<LoginPage> {
                    Navigator.push(
                           context, 
                           MaterialPageRoute(
-                            builder: (context) => ForgotPassword()), 
+                            builder: (context) => const ForgotPassword()), 
                             // (route) => false
                           );
                       },
                       child: Text(
                         "Click Here",
                         style: TextStyle(
-                            color: white_color,
+                            color: whiteColor,
                             fontWeight: FontWeight.bold),
                       ),
                     )

@@ -1,7 +1,7 @@
  
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+ 
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
  
 class MyDatetime extends StatefulWidget {
@@ -47,7 +47,7 @@ class _MyDatetimeState extends State<MyDatetime> {
               )
             ),
             padding: const EdgeInsets.symmetric(horizontal: 70,vertical: 15),
-                child: Text(widget.dateFoundBox.text.isEmpty ? "Selecte Date":'${widget.dateFoundBox.text}',
+                child: Text(widget.dateFoundBox.text.isEmpty ? "Selecte Date":widget.dateFoundBox.text,
                   style: TextStyle(
                     color:Theme.of(context).colorScheme.secondary 
                   ),
