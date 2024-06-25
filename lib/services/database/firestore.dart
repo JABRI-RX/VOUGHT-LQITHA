@@ -3,6 +3,8 @@
 import 'dart:developer';
  
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:lqitha/dao/models/post.dart';
 import 'package:lqitha/dao/models/user.dart';
 
@@ -42,7 +44,7 @@ class FireStoreService{
       return posts;
     }
     catch(e){
-      log(e.toString());
+      log("fireStore getPostsByUserId error ${e.toString()}");
       return [];
     }
   }
@@ -62,7 +64,7 @@ class FireStoreService{
       return posts;
     }
     catch(e){
-      log(e.toString());
+      log("firestore getPostsByName error ${e.toString()}");
       return [];
     }
   }
@@ -77,7 +79,6 @@ class FireStoreService{
         return Post.fromJson(doc.data() as Map<String,dynamic>);
       }).toList();
 
-
       return posts[0];
     }
     catch(e){
@@ -90,5 +91,19 @@ class FireStoreService{
     await usersDB.add(user.toJson()); 
  
   }
-
+  Future<List<CUser>> getUsers() async{
+    try{
+      QuerySnapshot querySnapshot = await usersDB
+      .get();
+   
+      List<CUser> users = querySnapshot.docs.map((doc){
+        return  CUser.fromJson(doc.data() as Map<String,dynamic>);
+      }).toList();
+      return users;
+    }
+    catch(e){
+      log("firestore getUsers error ${e.toString()}");
+      return [];
+    }
+  }
 }

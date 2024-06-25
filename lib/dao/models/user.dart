@@ -1,23 +1,26 @@
-import 'dart:convert';
+ 
+import 'dart:developer';
 
 class CUser{
-  String userid;
-  String username;
-  String email;
-  String? phone;
+  String  userid;
+  String  username;
+  String  email;
+  String  phone;
   CUser({
     required this.userid,
     required this.username,
     required this.email,
-    this.phone,
+    required this.phone,
   });
-  // factory User.fromJson(Map<String,dynamic> json){
-  //   return User(userid: json["userid"],
-  //           username: username, 
-  //           email: email, 
-  //           phone: phone
-  //   );
-  // }
+  factory CUser.fromJson(Map<String,dynamic> json){
+ 
+    return CUser(
+      userid: json["id"],
+      username: json["name"], 
+      email: json["email"], 
+      phone: json["phone"]
+    );
+  }
   Map<String ,dynamic> toJson(){
     return {
       'id': userid,
@@ -28,7 +31,7 @@ class CUser{
   }
   @override
   String toString() {
-    // TODO: implement toString
+ 
     StringBuffer result = StringBuffer();
     result.writeln("user id : $userid");
     result.writeln("username : $username");

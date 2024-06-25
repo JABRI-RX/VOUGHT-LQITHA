@@ -94,7 +94,7 @@ class _FindItemState extends State<FindItem> {
                       Post p = posts[index]["data"];
                       log("Post in list item is ${p.id}");
                       return  Container(
-                        margin: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.symmetric(vertical: 5,horizontal: 20),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(10)

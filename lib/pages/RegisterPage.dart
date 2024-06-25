@@ -85,6 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
               userid: _authService.getCurrentUser()!.uid, 
               username: userNameController.text,
               email: emailController.text, 
+              phone: "+212600000000"
               )
         );
         if(!mounted) return;

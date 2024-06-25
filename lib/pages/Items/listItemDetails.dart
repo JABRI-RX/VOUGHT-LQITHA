@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lqitha/dao/models/comment.dart';
 import 'package:lqitha/dao/models/post.dart';
+import 'package:lqitha/dao/models/user.dart';
 import 'package:lqitha/services/database/firestore.dart';
 import 'package:lqitha/themes/light_mode.dart';
 
@@ -13,22 +16,36 @@ class ListItemDetails extends StatefulWidget {
 }
 
 class _ListItemDetailsState extends State<ListItemDetails> {
-  var postdb = FireStoreService();
+  var firestore_db = FireStoreService();
   late Future<Post> _postFuture;
+  late Future<Map<String,dynamic>> _usersFurue;
   @override
   void initState() {
     super.initState();
-    _postFuture = postdb.getPostById(widget.postId);
+    _postFuture = firestore_db.getPostById(widget.postId);
+    _usersFurue = _getUserMap();
+  }
+  Future<Map<String,dynamic>> _getUserMap() async{
+    List<CUser> users = await firestore_db.getUsers();
+ 
+    Map<String,String> userMap = {};
+    for(CUser user in users){
+ 
+      userMap[user.userid] = user.username;
+    }
+ 
+    return userMap;
   }
   @override
   Widget build(BuildContext context){
     return   Padding(
-      padding: EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
            FutureBuilder(
-            future: _postFuture,
-            builder: (context,snapshot){
+            future: Future.wait([_postFuture,_usersFurue]),
+            builder: (context,AsyncSnapshot<List<dynamic>> snapshot){
+              
               if(snapshot.connectionState == ConnectionState.waiting){
                 return Center(
                   child: CircularProgressIndicator(
@@ -37,18 +54,22 @@ class _ListItemDetailsState extends State<ListItemDetails> {
                 );
               }
               else if(snapshot.hasError){
+                // log("${snapshot.data![0]}");
                 return Center(
-                  child: Text("Error :${snapshot.error}") ,
+                  child: Text("Error in coments :${snapshot.error}") ,
                 );
               }
               else{
-                String id = snapshot.data?.id ?? "";
-                String name= snapshot.data?.name ?? "";
-                String description= snapshot.data?.description ?? "";
-                String location= snapshot.data?.location ?? "";
-                String phone= snapshot.data?.phone ?? "";
-                DateTime dateLost =   snapshot.data?.dateLost ?? DateTime(1999);
-                List<Comment> comments = snapshot.data?.comments ?? [];
+                 
+                Post p =  snapshot.data![0] as Post;
+                Map<String,dynamic> userMap = snapshot.data![1] as Map<String,dynamic>;
+                String name= p.name ?? "";
+                String description= p.description ?? "";
+                String location= p.location ?? "";
+                String phone= p.phone ?? "";
+                DateTime dateLost =   p.dateLost ?? DateTime(1999);
+                List<Comment> comments = p.comments ?? [];
+                // log(snapshot.data![1].toString());
                 return Container(
                   child: Column(
                     children: [
@@ -87,7 +108,7 @@ class _ListItemDetailsState extends State<ListItemDetails> {
                           ),
                         ],
                       ),
-                      //locaiton
+                      //location
                       const SizedBox(height: 20,),
                       Row(
                         children: [
@@ -151,7 +172,6 @@ class _ListItemDetailsState extends State<ListItemDetails> {
                         ),
                       ),
                       const SizedBox(height: 10,),
-
                       for(Comment comment in comments) ...[
                         Column(
                           children: [
@@ -165,7 +185,10 @@ class _ListItemDetailsState extends State<ListItemDetails> {
                                     ),
                                     child: ListTile(
                                       title: Text(comment.content.toString()),
-                                      trailing: const Text("user",style: TextStyle(fontSize: 15),),
+                                      trailing: Text(
+                                        userMap[comment.userId] ?? "Unknown User",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -178,6 +201,7 @@ class _ListItemDetailsState extends State<ListItemDetails> {
                     ],
                   ),
                 );
+              
               }
             })
         ],

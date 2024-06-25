@@ -129,8 +129,8 @@ class _HomeState extends State<Home> {
           actions: [
             //no
             TextButton(
-              onPressed: () {
-                authService.signOut();
+              onPressed: () async {
+                await authService.signOut();
                 Navigator.pop(context);
                 Navigator.pop(context);
               }, 

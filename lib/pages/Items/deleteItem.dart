@@ -102,7 +102,7 @@ class _DeleteItemState extends State<DeleteItem> {
                       String docId = posts[index]['id'];
                       Post p = posts[index]["data"];
 
-                      log("Post in list item is ${p.id}");
+                      // log("Post in list item is ${p.id}");
                       return  Container(
                         margin: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
