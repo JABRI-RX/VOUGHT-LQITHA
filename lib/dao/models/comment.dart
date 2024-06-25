@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class Comment {
-  var uuid = Uuid();
+  var _uuid = Uuid();
   String? commentId;
   String? userId;
   String? postId;
@@ -16,7 +16,7 @@ class Comment {
     this.timestamp,
  
   }){
-    commentId =  uuid.v4();
+    commentId =  _uuid.v4();
     timestamp = DateTime.now();
   }
   //from json

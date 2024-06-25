@@ -1,4 +1,6 @@
  
+import 'dart:developer';
+ 
 import 'package:flutter/material.dart';
  
 import 'package:lqitha/dao/models/comment.dart';
@@ -6,10 +8,11 @@ import 'package:uuid/uuid.dart';
 
 class Post extends ChangeNotifier{
   //uuid
-  var uuid =   const Uuid();
+  var _uuid =   const Uuid();
   String? id;
   String? name;
   String? description;
+  String? location;
   String? phone;
   DateTime? dateLost;
   String? userId;
@@ -19,11 +22,12 @@ class Post extends ChangeNotifier{
     this.id,
     this.name,
     this.description,
+    this.location,
     this.phone,
     this.dateLost,
     this.userId,
   }){
-    id = uuid.v4();
+    id = id ?? _uuid.v4();
   }
   //getters
   List<Comment> get comments => _comments;
@@ -34,7 +38,9 @@ class Post extends ChangeNotifier{
   //factory fromJson 
    factory Post.fromJson(Map<String, dynamic> json) {
     List<Comment> jsonComment = [];
-    for(dynamic rawComment in json["posts"]["comments"] as List<dynamic>){
+ 
+
+    for(dynamic rawComment in json["comments"] as List<dynamic>){
       jsonComment.add(Comment(
         commentId: rawComment["commentId"],
         userId: rawComment["userId"],
@@ -44,12 +50,13 @@ class Post extends ChangeNotifier{
       ));
     }
     Post p = Post(
-      id: json["posts"]['id'],
-      name: json["posts"]['name'],
-      description: json["posts"]['description'],
-      phone: json["posts"]['phone'],
-      dateLost:  DateTime.parse(json["posts"]['dateLost']) ,
-      userId: json["posts"]['userId'],
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      location: json["location"],
+      phone: json['phone'],
+      dateLost:  DateTime.parse(json['dateLost']) ,
+      userId: json['userId'],
     );
     //we add comments I Dont fucking now Why this hack exsis
     p.addComments(jsonComment);
@@ -65,6 +72,7 @@ class Post extends ChangeNotifier{
       'id': id,
       'name': name,
       'description': description,
+      'location':location,
       'phone': phone,
       'dateLost': dateLost?.toString(),
       'userId': userId,
@@ -78,6 +86,7 @@ class Post extends ChangeNotifier{
     res.writeln("id $id");
     res.writeln("name $name");
     res.writeln("description $description");
+    res.writeln("description $location");
     res.writeln("phone $phone");
     res.writeln("dateLost ${dateLost?.toString()}");
     res.writeln("userId $userId");

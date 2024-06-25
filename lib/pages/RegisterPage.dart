@@ -1,13 +1,20 @@
  
 
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lqitha/components/logo.dart';
 import 'package:lqitha/components/my_button.dart';
 import 'package:lqitha/components/my_textfield.dart';
+import 'package:lqitha/components/toast.dart';
+import 'package:lqitha/dao/models/user.dart';
 import 'package:lqitha/pages/login_page.dart';
+ 
+import 'package:lqitha/services/auth/auth_gate.dart';
 import 'package:lqitha/services/auth/auth_service.dart';
-import 'package:lqitha/themes/light_mode.dart';
+import 'package:lqitha/services/database/firestore.dart';
+ 
  
 class RegisterPage extends StatefulWidget{
   final void Function()? onTap;
@@ -21,18 +28,32 @@ class RegisterPage extends StatefulWidget{
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmedpasswordController = TextEditingController();
-  void showToast(String text){
-     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-        content: Text(text,
-        style: TextStyle(color: UIColors.white),  
-          )
-        )
-      );
+  late TextEditingController userNameController ;
+  late TextEditingController emailController ;
+  late TextEditingController passwordController ;
+  late TextEditingController confirmedpasswordController ;
+  //get auth serice
+  late AuthService _authService ;
+  late FireStoreService usersPB;
+  //
+  @override
+  void initState() {
+    super.initState();
+    userNameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmedpasswordController = TextEditingController();
+    _authService = AuthService();
+    usersPB = FireStoreService();
+  }
+  @override 
+  void dispose() {
+ 
+    super.dispose();
+    userNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmedpasswordController.dispose();
   }
   void register() async{
     
@@ -42,15 +63,14 @@ class _RegisterPageState extends State<RegisterPage> {
         passwordController.text.isEmpty || 
         confirmedpasswordController.text.isEmpty
         ){
-         showToast("Some Fields Are Empty");
+         showToast(context,"Some Fields Are Empty");
         }
     //check if password match 
     if(passwordController.text != confirmedpasswordController.text){
-      showToast("The passwords Do not Match.");
+      showToast(context,"The passwords Do not Match.");
       return;
     }
-    //get auth serice
-    final _authService = AuthService();
+    
     //create user
     try{
       await _authService.signUp(
@@ -58,7 +78,17 @@ class _RegisterPageState extends State<RegisterPage> {
         emailController.text.trim(), 
         passwordController.text.trim()
         );
-        print(_authService.getCurrentUser()?.displayName);
+        log(_authService.getCurrentUser()?.displayName?? "");
+        
+        await usersPB.createUser(
+          CUser(
+              userid: _authService.getCurrentUser()!.uid, 
+              username: userNameController.text,
+              email: emailController.text, 
+              )
+        );
+        if(!mounted) return;
+        showToast(context, "Account Created successfully");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -66,28 +96,27 @@ class _RegisterPageState extends State<RegisterPage> {
             )
           )
         );
+ 
     }
     on FirebaseAuthException catch(e){
       String result  = "";
- 
       if(e.code == "Exception: weak-password"){
         result = "The password provided is too weak.";
       }
       else if (e.code == "email-already-in-use"){
         result = "The account already exists for that email.";
       }
-      showToast(result);
+      if(mounted){
+        showToast(context,result);
+      }
     }
     catch(e){
- 
-     showToast(e.toString());
-    }
- 
-     
+      if(mounted){   
+        showToast(context,e.toString());
+      }
+    }  
   }
-  void forgotPassword() async{
-
-  }
+  
   @override
   Widget build(BuildContext context) {
     Color white_color = Theme.of(context).colorScheme.inversePrimary;

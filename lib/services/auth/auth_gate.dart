@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lqitha/auth/login_or_register.dart';
@@ -13,9 +15,12 @@ const AuthGate({ Key? key }) : super(key: key);
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder:(context,snapshot){
+          log("Auth Gate Output : ${snapshot.data.toString()}");
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(child: CircularProgressIndicator(),);
+          }
           if(snapshot.hasData){
- 
-            return   Home();
+            return  Home();
           }
           else{
             return const LoginOrRegister();

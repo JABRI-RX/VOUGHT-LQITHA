@@ -6,6 +6,7 @@ import 'package:lqitha/components/logo.dart';
 import 'package:lqitha/components/my_button.dart';
 import 'package:lqitha/components/my_textfield.dart';
 import 'package:lqitha/pages/forgot_password.dart';
+import 'package:lqitha/pages/home.dart';
  
 import 'package:lqitha/services/auth/auth_service.dart';
  
@@ -19,8 +20,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  late TextEditingController emailController ;
+  late TextEditingController passwordController;
  
   void login() async{
     //validation
@@ -39,8 +40,9 @@ class _LoginPageState extends State<LoginPage> {
         emailController.text.trim(), 
         passwordController.text.trim()
         );
- 
-
+      if(mounted){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>   Home()));
+      }
     }
  
     catch(e){
@@ -52,7 +54,18 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     Color whiteColor = Theme.of(context).colorScheme.inversePrimary;

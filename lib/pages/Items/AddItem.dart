@@ -46,25 +46,19 @@ class _AddItemState extends State<AddItem> {
           showToast(context, "Some Fields Are Empty");
           return;
         }
-    print("--------------------------\n");
-    print("Post Creator id $userId");
-    print("Post Name : ${nameBox.text}");
-    print("Post Descrption : ${descriptionBox.text}");
-    print("Post location : ${locationBox.text}");
-    print("Post phone : ${phoneBox.text}");
-    print("Post date : ${dateFoundBox.text}");
-    print("--------------------------\n");
+ 
     Post p = Post(
-      name:nameBox.text.trim(),
+      name:nameBox.text.trim().toLowerCase(),
       description:descriptionBox.text.trim(),
+      location: locationBox.text.trim(),
       phone:phoneBox.text.trim(),
       dateLost:DateTime.parse(dateFoundBox.text) ,
       userId:userId,
     );
     //add two fake  c omment
     List<Comment> comments = [
-      Comment(userId: userId,postId:p.id,content:"This is first Comment"),
-      Comment(userId: userId,postId:p.id,content:"This is Second Comment"),
+      Comment(userId: userId,postId:p.id,content:"This is first Test Comment"),
+      Comment(userId: userId,postId:p.id,content:"This is Second Test Comment"),
     ];
     p.comments = comments;
     //end comment

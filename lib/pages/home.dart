@@ -26,14 +26,14 @@ class Home extends StatefulWidget {
     ),
     //update missing item
       MyDrawerTile(
-      text: "Update An Item",
+      text: "Update My Items",
       icon: Icons.update,
       color: color,
       onTap: (){}
     ),
     //delete missing item
       MyDrawerTile(
-      text: "Delete An Item",
+      text: "Delete My Items",
       icon: Icons.delete,
       color: color,
       onTap: (){}
@@ -131,6 +131,7 @@ class _HomeState extends State<Home> {
             TextButton(
               onPressed: () {
                 authService.signOut();
+                Navigator.pop(context);
                 Navigator.pop(context);
               }, 
               child: Text("Yes",
