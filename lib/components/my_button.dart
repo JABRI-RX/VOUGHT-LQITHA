@@ -5,12 +5,14 @@ class MyButton extends StatelessWidget{
   final String text;
   final Color bgcolor;
   final Color fgcolor;
+  final double? margin;
+  final double? padding;
   const MyButton({
     super.key,
     required this.text,
     required this.onTap,
     required this.bgcolor,
-    required this.fgcolor,
+    required this.fgcolor, this.margin, this.padding,
   });
   @override
   Widget build(BuildContext context) {
@@ -18,8 +20,8 @@ class MyButton extends StatelessWidget{
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(25),
-        margin: const EdgeInsets.symmetric(horizontal:25),
+        padding:   EdgeInsets.all(padding ?? 25),
+        margin:   EdgeInsets.symmetric(horizontal:margin ?? 25),
         decoration: BoxDecoration(color:bgcolor,borderRadius: BorderRadius.circular(10)),
         child: 
           Center(

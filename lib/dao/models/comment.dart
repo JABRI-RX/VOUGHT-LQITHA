@@ -16,7 +16,8 @@ class Comment {
     this.timestamp,
  
   }){
-    commentId =  _uuid.v4();
+ 
+    commentId =  commentId ?? _uuid.v4() ;
     timestamp = DateTime.now();
   }
   //from json

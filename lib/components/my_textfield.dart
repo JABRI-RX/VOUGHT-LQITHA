@@ -5,17 +5,19 @@ class MyTextfield extends StatelessWidget{
   final String hintText;
   final bool obsecureText;
   final Color color;
+  final double? padding;
   const MyTextfield({
     super.key,
     required this.controller,
     required this.hintText,
-    required this.obsecureText, required this.color,   
+    required this.obsecureText, required this.color, 
+    this.padding,   
   });
   @override
   Widget build(BuildContext context) {
      // TODO: implement build
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding:   EdgeInsets.symmetric(horizontal: padding ?? 25.0),
       child: TextField(
  
         controller: controller,

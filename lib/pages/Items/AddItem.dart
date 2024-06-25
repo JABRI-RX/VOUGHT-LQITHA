@@ -57,8 +57,7 @@ class _AddItemState extends State<AddItem> {
     );
     //add two fake  c omment
     List<Comment> comments = [
-      Comment(userId: userId,postId:p.id,content:"This is first Test Comment"),
-      Comment(userId: userId,postId:p.id,content:"This is Second Test Comment"),
+
     ];
     p.comments = comments;
     //end comment

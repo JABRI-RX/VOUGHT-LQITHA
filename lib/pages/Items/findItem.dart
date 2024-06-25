@@ -6,6 +6,7 @@ import 'package:lqitha/components/my_textfield.dart';
 import 'package:lqitha/components/toast.dart';
 import 'package:lqitha/dao/models/post.dart';
 import 'package:lqitha/pages/Items/detailsItem.dart';
+import 'package:lqitha/services/auth/auth_service.dart';
 import 'package:lqitha/services/database/firestore.dart';
  
 class FindItem extends StatefulWidget {
@@ -26,7 +27,7 @@ class _FindItemState extends State<FindItem> {
   void initState() {
     super.initState();
     itemNameBox = TextEditingController();
- 
+    userId = AuthService().getCurrentUser()!.uid;
   }
   @override
   Widget build(BuildContext context){
@@ -96,7 +97,9 @@ class _FindItemState extends State<FindItem> {
                       return  Container(
                         margin: const EdgeInsets.symmetric(vertical: 5,horizontal: 20),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: p.userId == userId
+                            ?Theme.of(context).colorScheme.tertiary 
+                            :Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(10)
                         ),
                         child: ListTile(

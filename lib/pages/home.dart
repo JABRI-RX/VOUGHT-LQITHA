@@ -76,11 +76,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var authService = AuthService();
   //drawer
   int _selectedDrawerIndex = 0;
   _getDrawerItemWiget(int pos){
     switch(pos){
- 
       //add item
       case 0:
         return const AddItem();
@@ -191,7 +191,7 @@ class _HomeState extends State<Home> {
     }
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Home",
+        title:  Text("Welcome Back ${authService.getCurrentUser()!.displayName}",
           style: TextStyle(fontSize: 18,color: Theme.of(context).colorScheme.inversePrimary),
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,

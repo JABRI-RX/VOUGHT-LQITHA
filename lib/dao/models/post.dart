@@ -39,7 +39,7 @@ class Post extends ChangeNotifier{
    factory Post.fromJson(Map<String, dynamic> json) {
     List<Comment> jsonComment = [];
  
-
+ 
     for(dynamic rawComment in json["comments"] as List<dynamic>){
       jsonComment.add(Comment(
         commentId: rawComment["commentId"],
@@ -49,6 +49,7 @@ class Post extends ChangeNotifier{
         timestamp: DateTime.parse(rawComment["timestamp"]),
       ));
     }
+     
     Post p = Post(
       id: json['id'],
       name: json['name'],
