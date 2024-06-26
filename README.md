@@ -2,8 +2,13 @@
 
 #### Overview
 VOUGHT LQITHA is a powerful mobile application that leverages community engagement to help users find lost items. Built using Flutter and Firebase, VOUGHT LQITHA allows users to report found items and search for their lost belongings within a supportive network of users.
-##### UI of the app
-![alt text](pfa/screens/add_item.PNG)
+#### UI of the app
+##### Login Page
+![alt text](pfa/screens/loginPage.png)
+##### Register Page
+![alt text](pfa/screens/registerPage.png)
+##### Forgot Password Page
+![alt text](pfa/screens/forgot_password.png)
 #### Key Features
 
 1. **Report Found Items**
