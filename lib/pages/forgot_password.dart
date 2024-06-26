@@ -79,7 +79,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 //sign in button
                 const SizedBox(height: 20),
                 MyButton(
-                  text: "Sign In",
+                  text: "Forgot Passowrd",
                   onTap: forgotPassword,
                   bgcolor:white_color,
                   fgcolor:Theme.of(context).colorScheme.secondary,
